@@ -1,6 +1,6 @@
 {
   "name": "ember-handle-keys-helper",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Handle keyboard events directly in templates with `{{on}}` modifier.",
   "keywords": [
     "ember-addon"
