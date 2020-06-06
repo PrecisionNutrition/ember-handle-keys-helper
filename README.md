@@ -2,16 +2,22 @@
 
 Ember helper for handling keyboard events directly in templates together with the `{{on}}` modifier.
 
-It returns a [`KeyboardEvent`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent) handler which will call your function, if the `key` property of an event matches your target keys (e.g. `"Escape"` or `"ArrowUp"`).
+It returns a [`KeyboardEvent`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent) handler which will call your function, if the `key` property of the event matches your target keys (e.g. `"Escape"` or `"ArrowUp"`).
 
-**Some features:**
+**Main features:**
 
 - can handle multiple keys
 - can call `preventDefault`/`stopPropagation` on matched events
 - handles non-standard key identifiers for `IE` and `Edge`
 - it's really tiny and has no dependencies
 
-**Examples:**
+## Installation
+
+```
+ember install ember-handle-keys-helper
+```
+
+## Usage
 
 A single key:
 
@@ -19,7 +25,7 @@ A single key:
 <Player {{on "keydown" (handle-keys @pause "Escape")}} />
 ```
 
-Multiple keys:
+Multiple keys for the same handler:
 
 ```handlebars
 <Player
@@ -27,7 +33,7 @@ Multiple keys:
 />
 ```
 
-With `stopPropagation`:
+With `stopPropagation` (it will only be called on a matched event):
 
 ```handlebars
 <Player
@@ -44,7 +50,7 @@ Multiple handlers with multiple `{{on}}` modifiers:
 />
 ```
 
-Multiple handlers with a single `{{on}}` modifier, [{{queue}} helper](https://github.com/DockYard/ember-composable-helpers#queue) and `preventDefault` for multiple keys (the handler is optional):
+Multiple handlers with a single `{{on}}` modifier and [{{queue}}](https://github.com/DockYard/ember-composable-helpers#queue) helper:
 
 ```handlebars
 <Player
@@ -57,16 +63,6 @@ Multiple handlers with a single `{{on}}` modifier, [{{queue}} helper](https://gi
   )}}
 />
 ```
-
-## Installation
-
-```
-ember install ember-handle-keys-helper
-```
-
-## Usage
-
-It's coming. For now, see the examples above.
 
 ## Compatibility
 
