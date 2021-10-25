@@ -10,7 +10,7 @@ export default helper(function handleKeys(
 
   assert(
     `Expected an optional handler following by target keys, but got ${args}`,
-    targetKeys.length && targetKeys.every(k => typeof k === 'string')
+    targetKeys.length && targetKeys.every((k) => typeof k === 'string')
   );
 
   return function keyboardEventHandler(event) {
