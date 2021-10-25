@@ -54,7 +54,10 @@ module('Integration | Helper | handle-keys ', function (hooks) {
     assert.ok(this.handlerSpy.calledTwice, 'ignores irrelevant keys');
 
     await triggerKeyEvent('[data-test]', 'keydown', 'Down');
-    assert.ok(this.handlerSpy.calledThrice, 'handles non-standard IE/Edge keys');
+    assert.ok(
+      this.handlerSpy.calledThrice,
+      'handles non-standard IE/Edge keys'
+    );
   });
 
   test('keydown event propagates by default', async function (assert) {

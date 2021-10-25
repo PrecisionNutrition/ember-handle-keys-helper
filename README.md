@@ -22,31 +22,27 @@ ember install ember-handle-keys-helper
 A single key:
 
 ```handlebars
-<Player {{on "keydown" (handle-keys @pause "Escape")}} />
+<Player {{on 'keydown' (handle-keys @pause 'Escape')}} />
 ```
 
 Multiple keys for the same handler:
 
 ```handlebars
-<Player
-  {{on "keydown" (handle-keys @pause "Escape" "Delete")}}
-/>
+<Player {{on 'keydown' (handle-keys @pause 'Escape' 'Delete')}} />
 ```
 
 With `stopPropagation` (it will only be called on a matched event):
 
 ```handlebars
-<Player
-  {{on "keydown" (handle-keys @play "Enter" stopPropagation=true)}}
-/>
+<Player {{on 'keydown' (handle-keys @play 'Enter' stopPropagation=true)}} />
 ```
 
 Multiple handlers with multiple `{{on}}` modifiers:
 
 ```handlebars
 <Player
-  {{on "keydown" (handle-keys @play "Enter")}}
-  {{on "keydown" (handle-keys @pause "Escape")}}
+  {{on 'keydown' (handle-keys @play 'Enter')}}
+  {{on 'keydown' (handle-keys @pause 'Escape')}}
 />
 ```
 
@@ -54,21 +50,24 @@ Multiple handlers with a single `{{on}}` modifier and [{{queue}}](https://github
 
 ```handlebars
 <Player
-  {{on "keydown" (queue
-    (handle-keys @play "Enter")
-    (handle-keys @pause "Escape")
-    (handle-keys @volumeUp "ArrowUp")
-    (handle-keys @volumeDown "ArrowDown")
-    (handle-keys "ArrowUp" "ArrowDown" preventDefault=true)
-  )}}
+  {{on
+    'keydown'
+    (queue
+      (handle-keys @play 'Enter')
+      (handle-keys @pause 'Escape')
+      (handle-keys @volumeUp 'ArrowUp')
+      (handle-keys @volumeDown 'ArrowDown')
+      (handle-keys 'ArrowUp' 'ArrowDown' preventDefault=true)
+    )
+  }}
 />
 ```
 
 ## Compatibility
 
-- Ember.js v3.12 or above
-- Ember CLI v2.13 or above
-- Node.js v10 or above
+- Ember.js v3.20 or above
+- Ember CLI v3.20 or above
+- Node.js v12 or above
 
 ## Contributing
 

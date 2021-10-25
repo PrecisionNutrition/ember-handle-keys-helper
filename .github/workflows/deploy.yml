@@ -1,0 +1,71 @@
+name: Deploy Storybook
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ['14']
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Get package manager's global cache path
+        id: global-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache package manager's global cache and node_modules
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ steps.global-cache-dir-path.outputs.dir }}
+            node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{
+            hashFiles('**/yarn.lock'
+            ) }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}-
+
+      - name: Install Dependencies
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+          npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+
+          yarn install --frozen-lockfile
+        if: |
+          steps.cache-dependencies.outputs.cache-hit != 'true'
+
+      - name: Configure AWS Credentials for Design Account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.DESIGN_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DESIGN_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Add profile credentials to ~/.aws/credentials
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.DESIGN_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DESIGN_AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile default
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile default
+
+      - name: Deploy Storybook
+        run: yarn deploy-storybook

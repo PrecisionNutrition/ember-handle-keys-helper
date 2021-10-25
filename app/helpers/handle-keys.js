@@ -1,1 +1,4 @@
-export { default, handleKeys } from 'ember-handle-keys-helper/helpers/handle-keys';
+export {
+  default,
+  handleKeys,
+} from 'ember-handle-keys-helper/helpers/handle-keys';
